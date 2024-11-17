@@ -11,12 +11,12 @@ const PostRoutes = require("./routes/PostRoutes");
 const connectDB = require("./config/db");
 
 app.use(cors());
-const PORT = 8000;
+
 connectDB();
 
 app.use(express.json());
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });
 
 // Use the user routes for requests to /users
