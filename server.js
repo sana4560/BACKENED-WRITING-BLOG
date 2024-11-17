@@ -1,26 +1,32 @@
 require("dotenv").config();
 
 const express = require("express");
-const cors = require("cors"); // Import CORS
+const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 
 const app = express();
 const userRoutes = require("./routes/UserRoutes");
-const PostRoutes = require("./routes/PostRoutes");
+const postRoutes = require("./routes/PostRoutes");
 const connectDB = require("./config/db");
 
 app.use(cors());
 
+// Connect to the database
 connectDB();
 
+// Middleware to parse JSON requests
 app.use(express.json());
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+
+// Routes
+app.use("/users", userRoutes);
+app.use("/post", postRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Default route (just in case you want to check if everything is working)
+app.get("/", (req, res) => {
+  res.send("Backend server is working");
 });
 
-// Use the user routes for requests to /users
-app.use("/users", userRoutes);
-app.use("/post", PostRoutes);
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Export the app (important for Vercel to use)
+module.exports = app;
