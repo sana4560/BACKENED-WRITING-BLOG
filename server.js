@@ -1,9 +1,9 @@
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
+const serverless = require("serverless-http");
 
 const app = express();
 const userRoutes = require("./routes/UserRoutes");
@@ -28,5 +28,5 @@ app.get("/", (req, res) => {
   res.send("Backend server is working");
 });
 
-// Export the app (important for Vercel to use)
-module.exports = app;
+// Wrap the Express app using serverless-http
+module.exports = serverless(app);
